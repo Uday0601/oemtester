@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "660897161763",
+    "project_id": "ron-j-solutions",
+    "storage_bucket": "ron-j-solutions.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660897161763:android:a6ba058d0728fa1f548796",
+        "android_client_info": {
+          "package_name": "com.ronjsolutions.oemtester"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "660897161763-r9q8ie3a641banq6qkeis2nehhmatd2s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWFDFNI6sPCAS5oiKnalm99JGAINTr68g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "660897161763-r9q8ie3a641banq6qkeis2nehhmatd2s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
