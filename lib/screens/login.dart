@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:oemtester/custom_widgets/primary_button.dart';
 import 'package:oemtester/screens/home.dart';
+import 'package:oemtester/services/authServices.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -10,6 +12,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   bool _obscureText = true;
   IconData _suffixIcon = Icons.lock_outline;
 
@@ -21,6 +25,29 @@ class _LoginState extends State<Login> {
   final passwordValidator = MultiValidator([
     MinLengthValidator(8, errorText: 'Password must be 8 characters*'),
   ]);
+
+  //Method to check AuthState
+  checkAuthState() async {
+    FirebaseAuth.instance.authStateChanges().listen(
+      (user) {
+        if (user != null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Home(),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  //initState
+  @override
+  void initState() {
+    super.initState();
+    this.checkAuthState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +73,7 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
                   child: TextFormField(
+                    controller: _emailController,
                     cursorColor: Colors.deepPurpleAccent,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     keyboardType: TextInputType.emailAddress,
@@ -60,6 +88,7 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
                   child: TextFormField(
+                    controller: _passwordController,
                     cursorColor: Colors.deepPurpleAccent,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -103,13 +132,21 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(50.0, 20.0, 50.0, 0.0),
                   child: PrimaryButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Home(),
-                        ),
+                    onPressed: () async {
+                      Future<bool> shouldNavigate =
+                          AuthServices(FirebaseAuth.instance).login(
+                        email: _emailController.text,
+                        password: _passwordController.text,
                       );
+                      // ignore: unrelated_type_equality_checks
+                      if (shouldNavigate == true) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Home(),
+                          ),
+                        );
+                      }
                     },
                     text: 'Login',
                     color: Colors.deepPurpleAccent,
